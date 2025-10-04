@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>フラッシュカード 自動表示</title>
+<style>
+  body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+  .card { font-size: 48px; margin: 50px; }
+  #startBtn { font-size: 24px; padding: 10px 20px; }
+  #formLink a { font-size: 24px; color: blue; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div id="instruction">
+  これから英字10個をフラッシュカードの要領で順番に表示します。準備ができたら「開始」を押してください。声に出したり書いたりして覚えるのはやめてください。最後に覚えたものは回答フォームで選択してください。
+</div>
+
+<div id="card" class="card"></div>
+<button id="startBtn">開始</button>
+
+<!-- フォームリンク（最初は非表示） -->
+<div id="formLink" style="display:none; margin-top:20px;">
+  <a href="https://docs.google.com/forms/d/1w1gVjSiiwSe4lxdzpkFiUlaOSTyF8tTmRzO4qDlG7Ko/viewform" target="_blank">
+    回答フォームへ
+  </a>
+</div>
+
+<script>
+  const displaySequence = [
+    {letter: 'b', color: '#550000'},
+    {letter: 'k', color: '#ff6666'},
+    {letter: 'e', color: '#aa0000'},
+    {letter: 'm', color: '#ff9999'},
+    {letter: 'g', color: '#aa0000'},
+    {letter: 'j', color: '#ff3333'},
+    {letter: 'h', color: '#ff3333'},
+    {letter: 'd', color: '#550000'},
+    {letter: 'n', color: '#ff9999'},
+    {letter: 'l', color: '#ff6666'}
+  ];
+
+  const cardDiv = document.getElementById('card');
+  const startBtn = document.getElementById('startBtn');
+  let current = 0;
+  let intervalId;
+
+  function showNextCard() {
+    if(current < displaySequence.length){
+      const item = displaySequence[current];
+      cardDiv.textContent = item.letter;
+      cardDiv.style.color = item.color;
+      current++;
+    } else {
+      clearInterval(intervalId);
+      cardDiv.textContent = "表示終了！";
+      document.getElementById('formLink').style.display = 'block';
+    }
+  }
+
+  startBtn.addEventListener('click', () => {
+    startBtn.style.display = 'none';
+    showNextCard(); // 最初の文字を即表示
+    intervalId = setInterval(showNextCard, 5000); // 5秒ごとに表示
+  });
+</script>
+
+</body>
+</html>
